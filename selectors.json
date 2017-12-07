@@ -1,0 +1,10 @@
+{
+    "fruits": {
+        "selector": "#collapsibleTable0 > tbody > tr:nth-child(9) > td > div > a",
+        "url": "https://simple.wikipedia.org/wiki/List_of_fruits"
+    },
+    "countries": {
+        "selector": "#collapsibleTable2 > tbody > tr > td > div > ul > li > a",
+        "url": "https://en.wikipedia.org/wiki/Lists_of_countries_and_territories"
+    }
+}
