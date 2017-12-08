@@ -38,6 +38,7 @@ let scrape = async(list_type) => {
     }, selectors, list_type);
 
     browser.close();
+    console.log(result);
     return result;
 
 }
