@@ -16,30 +16,42 @@ app.get('/:list_type', function(req, res) {
     scrape(req.params.list_type).then((value) => {
         responseData[req.params.list_type] = value.data;
         res.send(200, responseData);
-    }).catch((error) => res.send(200, { error: error }));
+    },(error) => res.send(200, { error: error }));
 
 });
 
-let scrape = async(list_type) => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+let scrape =  (list_type) => {
+    let browser;
+    let page;
+    return puppeteer.launch().then(function(browserT){
+        browser = browserT;
+        return browserT.newPage();
+            
+    }).then(function(pageT){
+        page  = pageT;
+        return pageT.goto(selectors[list_type]['url'])
+            .then(function(){
+                pageT.waitFor(1000);
+            });
 
-    await page.goto(selectors[list_type]['url']);
-    await page.waitFor(1000);
+    }).then(function(){
+        var evlPromise =  page.evaluate(function(selectors, list_type) {
+            let types = document.querySelectorAll(selectors[list_type]['selector']);
+            types = [].map.call(types, function(elem) {
+                return elem.innerText;
+            });
+            return {
+                data: types
+            };
+        }, selectors, list_type);
 
-    const result = await page.evaluate(function(selectors, list_type) {
-        let types = document.querySelectorAll(selectors[list_type]['selector']);
-        types = [].map.call(types, function(elem) {
-            return elem.innerText;
+        evlPromise.then(function(result){
+            browser.close();
+            console.log(result);
         });
-        return {
-            data: types
-        };
-    }, selectors, list_type);
 
-    browser.close();
-    console.log(result);
-    return result;
+        return evlPromise;
+    });
 
 }
 
