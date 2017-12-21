@@ -23,7 +23,7 @@ app.get('/:list_type', function(req, res) {
 let scrape =  (list_type) => {
     let browser;
     let page;
-    return puppeteer.launch().then(function(browserT){
+    return puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']}).then(function(browserT){
         browser = browserT;
         return browserT.newPage();
             
