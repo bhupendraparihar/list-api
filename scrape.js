@@ -56,5 +56,5 @@ let scrape =  (list_type) => {
 }
 
 app.listen(app.get('port'), function() {
-    console.log('Express server started some change at PORT : ' + app.get('port'));
+    console.log('Express server started Puppeteer Try at PORT : ' + app.get('port'));
 });
